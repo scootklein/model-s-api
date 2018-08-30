@@ -2,6 +2,9 @@ module TeslaApi
   class Client
     include HTTParty
     base_uri "https://owner-api.teslamotors.com/api/1"
+    headers({
+      "User-Agent": "scott.evbuddy.io/#{ENV['HEROKU_SLUG_COMMIT'] || 'dev'}"
+    })
     format :json
 
     attr_reader :email, :token, :client_id, :client_secret
@@ -46,7 +49,7 @@ module TeslaApi
               "password" => password
           }
       )
-      
+
       self.expires_in = response["expires_in"]
       self.created_at = response["created_at"]
       self.token      = response["access_token"]
